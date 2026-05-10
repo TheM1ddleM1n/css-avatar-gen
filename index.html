@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CSS Avatar Generator</title>
   <meta name="description" content="Generate unique CSS-only avatars from any name or seed. No canvas, no images — pure CSS shapes." />
+  <meta property="og:title" content="CSS Avatar Generator" />
+  <meta property="og:description" content="Unique avatars from any name — built entirely from CSS shapes." />
+  <meta property="og:url" content="https://them1ddlem1n.github.io/css-avatar-gen/" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,9 +18,20 @@
   </div>
 
   <header class="hero">
-    <div class="badge">✦ Pure CSS · No Canvas · No Images</div>
+    <div class="hero-top">
+      <div class="badge">✦ Pure CSS · No Canvas · No Images</div>
+      <div class="hero-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle light/dark mode">☀</button>
+        <button id="anim-toggle" class="icon-btn" aria-label="Toggle animations" title="Toggle idle animations">◎</button>
+      </div>
+    </div>
     <h1>Avatar Generator</h1>
     <p class="subtitle">Unique avatars from any name — built entirely from CSS shapes.</p>
+    <div class="avatar-of-day" id="aotd-wrap">
+      <span class="aotd-label">Avatar of the Day</span>
+      <div id="aotd-avatar"></div>
+      <span class="aotd-seed" id="aotd-seed"></span>
+    </div>
   </header>
 
   <main class="app">
@@ -30,15 +44,20 @@
       <button id="randomize-btn" class="btn-primary">
         <span class="btn-icon">⟳</span> Randomize
       </button>
-      <button id="export-btn" class="btn-secondary">
-        <span class="btn-icon">↓</span> Export SVG
-      </button>
+      <div class="export-group">
+        <button id="export-svg-btn" class="btn-secondary">↓ SVG</button>
+        <button id="export-css-btn" class="btn-secondary">↓ CSS</button>
+        <button id="export-react-btn" class="btn-secondary">↓ React</button>
+        <button id="share-btn" class="btn-secondary">⇧ Share</button>
+      </div>
     </div>
 
     <div class="tabs">
       <button class="tab active" data-tab="grid">Grid</button>
       <button class="tab" data-tab="single">Single</button>
       <button class="tab" data-tab="showcase">Showcase</button>
+      <button class="tab" data-tab="battle">⚔ Battle</button>
+      <button class="tab" data-tab="compare">⇄ Compare</button>
     </div>
 
     <div class="tab-panel active" id="tab-grid">
@@ -55,15 +74,49 @@
     <div class="tab-panel" id="tab-showcase">
       <div class="showcase-grid" id="showcase-grid"></div>
     </div>
+
+    <div class="tab-panel" id="tab-battle">
+      <div class="battle-view">
+        <div class="battle-side">
+          <input class="battle-input" id="battle-a" placeholder="Fighter A" value="Alice" />
+          <div class="battle-avatar-wrap" id="battle-avatar-a"></div>
+          <div class="battle-score" id="battle-score-a"></div>
+        </div>
+        <div class="battle-vs">
+          <span>VS</span>
+          <button class="btn-primary" id="battle-btn">Fight!</button>
+          <div class="battle-result" id="battle-result"></div>
+        </div>
+        <div class="battle-side">
+          <input class="battle-input" id="battle-b" placeholder="Fighter B" value="Bob" />
+          <div class="battle-avatar-wrap" id="battle-avatar-b"></div>
+          <div class="battle-score" id="battle-score-b"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-compare">
+      <div class="compare-view">
+        <div class="compare-side">
+          <input class="compare-input" id="compare-a" placeholder="Name A" value="Alice" />
+          <div class="compare-avatar-wrap" id="compare-avatar-a"></div>
+          <div class="compare-traits" id="compare-traits-a"></div>
+        </div>
+        <div class="compare-divider"></div>
+        <div class="compare-side">
+          <input class="compare-input" id="compare-b" placeholder="Name B" value="Bob" />
+          <div class="compare-avatar-wrap" id="compare-avatar-b"></div>
+          <div class="compare-traits" id="compare-traits-b"></div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <div class="toast" id="toast"></div>
 
   <footer>
     <p>Made with <span class="heart">♥</span> using only CSS shapes &amp; vanilla JS</p>
-    <a href="https://github.com" class="github-link" target="_blank" rel="noopener">
-      ★ Star on GitHub
-    </a>
+    <a href="https://github.com/them1ddlem1n/css-avatar-gen" class="github-link" target="_blank" rel="noopener">★ Star on GitHub</a>
   </footer>
 
   <script src="script.js"></script>
