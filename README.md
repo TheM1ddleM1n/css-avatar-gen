@@ -2,7 +2,7 @@
 
 Generate unique avatars from any name or string — built entirely from CSS shapes, no canvas, no images, no dependencies.
 
-**[Try it live →](https://them1ddlem1n.github.io/css-avatar-gen/)**
+**[Try it live ♥](https://them1ddlem1n.github.io/css-avatar-gen/)**
 
 ---
 
