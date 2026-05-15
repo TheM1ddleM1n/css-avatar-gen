@@ -35,14 +35,15 @@ const PALETTES = [
 ];
 
 const MOUTHS = ['smile', 'neutral', 'smirk', 'open'];
-const SHAPES = ['circle', 'squircle', 'hexagon', 'shield'];
-const SHAPE_NAMES = { circle: 'Circle', squircle: 'Squircle', hexagon: 'Hexagon', shield: 'Shield' };
+const SHAPES = ['circle', 'squircle', 'hexagon', 'shield', 'github'];
+const SHAPE_NAMES = { circle: 'Circle', squircle: 'Squircle', hexagon: 'Hexagon', shield: 'Shield', github: 'GitHub' };
 
 function getBorderRadius(shape) {
   if (shape === 'circle') return '50%';
   if (shape === 'squircle') return '30%';
   if (shape === 'hexagon') return '15% 30% 15% 30% / 30% 15% 30% 15%';
   if (shape === 'shield') return '50% 50% 40% 40% / 60% 60% 40% 40%';
+  if (shape === 'github') return '17%';
   return '50%';
 }
 
@@ -145,6 +146,7 @@ function avatarToSVG(seed) {
   if (shape === 'circle') faceEl = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${palette.face}"/>`;
   else if (shape === 'squircle') faceEl = `<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="25" fill="${palette.face}"/>`;
   else if (shape === 'hexagon') faceEl = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${palette.face}"/>`;
+  else if (shape === 'github') faceEl = `<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="14" fill="${palette.face}"/>`;
   else faceEl = `<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*1.05}" fill="${palette.face}"/>`;
 
   const blushSVG = hasBlush
@@ -181,6 +183,63 @@ function avatarToSVG(seed) {
     : '';
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
+${faceEl}
+${blushSVG}
+${earringSVG}
+${eyeL}
+${eyeR}
+${glassesSVG}
+${mouthSVG}
+${hatSVG}
+</svg>`;
+}
+
+function avatarToGitHubSVG(seed) {
+  const data = buildAvatarData(seed);
+  const { palette, mouth, shape, hasGlasses, hasHat, hasBlush, hasEarring, winkLeft } = data;
+  const cx = 200, cy = 200, r = 168;
+
+  let faceEl;
+  if (shape === 'circle') faceEl = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${palette.face}"/>`;
+  else if (shape === 'squircle') faceEl = `<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="100" fill="${palette.face}"/>`;
+  else if (shape === 'hexagon') faceEl = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${palette.face}"/>`;
+  else if (shape === 'github') faceEl = `<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="68" fill="${palette.face}"/>`;
+  else faceEl = `<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*1.05}" fill="${palette.face}"/>`;
+
+  const blushSVG = hasBlush
+    ? `<ellipse cx="${cx-88}" cy="${cy+20}" rx="28" ry="16" fill="${palette.accent}" opacity="0.4"/>
+       <ellipse cx="${cx+88}" cy="${cy+20}" rx="28" ry="16" fill="${palette.accent}" opacity="0.4"/>`
+    : '';
+
+  const earringSVG = hasEarring
+    ? `<circle cx="${cx-r+8}" cy="${cy+40}" r="16" fill="${palette.accent}"/>
+       <circle cx="${cx+r-8}" cy="${cy+40}" r="16" fill="${palette.accent}"/>`
+    : '';
+
+  const eyeL = winkLeft
+    ? `<line x1="${cx-56}" y1="${cy-32}" x2="${cx-24}" y2="${cy-32}" stroke="#111" stroke-width="12" stroke-linecap="round"/>`
+    : `<circle cx="${cx-40}" cy="${cy-32}" r="20" fill="#111"/><circle cx="${cx-32}" cy="${cy-40}" r="6" fill="rgba(255,255,255,0.7)"/>`;
+
+  const eyeR = `<circle cx="${cx+40}" cy="${cy-32}" r="20" fill="#111"/><circle cx="${cx+48}" cy="${cy-40}" r="6" fill="rgba(255,255,255,0.7)"/>`;
+
+  let mouthSVG;
+  if (mouth === 'smile') mouthSVG = `<path d="M ${cx-52} ${cy+56} Q ${cx} ${cy+104} ${cx+52} ${cy+56}" stroke="#111" stroke-width="12" fill="none" stroke-linecap="round"/>`;
+  else if (mouth === 'neutral') mouthSVG = `<line x1="${cx-40}" y1="${cy+72}" x2="${cx+40}" y2="${cy+72}" stroke="#111" stroke-width="12" stroke-linecap="round"/>`;
+  else if (mouth === 'open') mouthSVG = `<ellipse cx="${cx}" cy="${cy+72}" rx="32" ry="28" fill="#111"/>`;
+  else mouthSVG = `<path d="M ${cx} ${cy+56} Q ${cx+48} ${cy+88} ${cx+52} ${cy+56}" stroke="#111" stroke-width="12" fill="none" stroke-linecap="round"/>`;
+
+  const glassesSVG = hasGlasses
+    ? `<rect x="${cx-88}" y="${cy-56}" width="64" height="48" rx="12" stroke="rgba(0,0,0,0.5)" stroke-width="8" fill="none"/>
+       <rect x="${cx+24}" y="${cy-56}" width="64" height="48" rx="12" stroke="rgba(0,0,0,0.5)" stroke-width="8" fill="none"/>
+       <line x1="${cx-24}" y1="${cy-32}" x2="${cx+24}" y2="${cy-32}" stroke="rgba(0,0,0,0.4)" stroke-width="8"/>`
+    : '';
+
+  const hatSVG = hasHat
+    ? `<rect x="${cx-88}" y="${cy-184}" width="176" height="64" rx="16" fill="${palette.accent}"/>
+       <rect x="${cx-120}" y="${cy-128}" width="240" height="32" rx="16" fill="${palette.accent}"/>`
+    : '';
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
 ${faceEl}
 ${blushSVG}
 ${earringSVG}
@@ -355,7 +414,7 @@ function avatarToReact(seed) {
       ${hasEarring ? `<div style={{ position:'absolute', top:'52%', left:-4, width:7, height:7, borderRadius:'50%', background:'${palette.accent}' }} />
       <div style={{ position:'absolute', top:'52%', right:-4, width:7, height:7, borderRadius:'50%', background:'${palette.accent}' }} />` : ''}
       <div style={{ position:'absolute', top:'32%', left:'50%', transform:'translateX(-50%)', display:'flex', gap:12 }}>
-        <div style={{ width:9, height:${winkLeft ? 3 : 9}, background:'#111', borderRadius:${winkLeft ? 2 : '50%'} }} />
+        <div style={{ width:9, height:${winkLeft ? 3 : 9}, background:'#111', borderRadius:${winkLeft ? 2 : '\'50%\''} }} />
         <div style={{ width:9, height:9, background:'#111', borderRadius:'50%' }} />
       </div>
       ${hasGlasses ? `<div style={{ position:'absolute', top:'30%', left:'50%', transform:'translateX(-50%)', display:'flex', gap:3, alignItems:'center' }}>
@@ -542,11 +601,45 @@ function buildCompare() {
   });
 }
 
+function buildPFPView(seed) {
+  const wrap = document.getElementById('pfp-avatar-wrap');
+  const preview = document.getElementById('pfp-preview-svg');
+  wrap.innerHTML = '';
+  preview.innerHTML = '';
+  const { el, data } = buildAvatar(seed, true);
+  wrap.appendChild(el);
+  preview.innerHTML = avatarToGitHubSVG(seed);
+  document.getElementById('pfp-info').textContent =
+    `${data.palette.name} · ${SHAPE_NAMES[data.shape]} · ${data.mouth}`;
+}
+
+function downloadAvatarAsPNG(seed, size = 400) {
+  const svg = avatarToGitHubSVG(seed);
+  const blob = new Blob([svg], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, size, size);
+    URL.revokeObjectURL(url);
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = `pfp-${seed}.png`;
+    a.click();
+    showToast('PNG downloaded!');
+  };
+  img.src = url;
+}
+
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${name}`));
   if (name === 'battle') buildBattle();
   if (name === 'compare') buildCompare();
+  if (name === 'pfp') buildPFPView(input.value.trim() || 'default');
 }
 
 function getSeedFromURL() {
@@ -585,6 +678,9 @@ input.addEventListener('input', () => {
     generateGrid('');
     updateSingleView('default');
   }
+  if (document.querySelector('.tab[data-tab="pfp"]').classList.contains('active')) {
+    buildPFPView(val || 'default');
+  }
 });
 
 clearBtn.addEventListener('click', () => {
@@ -593,6 +689,9 @@ clearBtn.addEventListener('click', () => {
   setSeedInURL('');
   generateGrid('');
   updateSingleView('default');
+  if (document.querySelector('.tab[data-tab="pfp"]').classList.contains('active')) {
+    buildPFPView('default');
+  }
 });
 
 document.getElementById('randomize-btn').addEventListener('click', () => {
@@ -602,6 +701,9 @@ document.getElementById('randomize-btn').addEventListener('click', () => {
   setSeedInURL(r);
   generateGrid(r);
   updateSingleView(r);
+  if (document.querySelector('.tab[data-tab="pfp"]').classList.contains('active')) {
+    buildPFPView(r);
+  }
 });
 
 document.getElementById('export-svg-btn').addEventListener('click', () => {
@@ -663,6 +765,17 @@ document.getElementById('battle-btn').addEventListener('click', runBattle);
 
 ['compare-a', 'compare-b'].forEach(id => {
   document.getElementById(id).addEventListener('input', buildCompare);
+});
+
+document.getElementById('pfp-download-btn').addEventListener('click', () => {
+  const val = input.value.trim() || 'default';
+  downloadAvatarAsPNG(val, 400);
+});
+
+document.getElementById('pfp-copy-btn').addEventListener('click', () => {
+  const val = input.value.trim() || 'default';
+  navigator.clipboard.writeText(avatarToGitHubSVG(val));
+  showToast('SVG copied to clipboard!');
 });
 
 const savedTheme = localStorage.getItem('av-theme');
