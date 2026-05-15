@@ -58,6 +58,7 @@
       <button class="tab" data-tab="showcase">Showcase</button>
       <button class="tab" data-tab="battle">⚔ Battle</button>
       <button class="tab" data-tab="compare">⇄ Compare</button>
+      <button class="tab" data-tab="pfp">🖼 PFP</button>
     </div>
 
     <div class="tab-panel active" id="tab-grid">
@@ -107,6 +108,26 @@
           <input class="compare-input" id="compare-b" placeholder="Name B" value="Bob" />
           <div class="compare-avatar-wrap" id="compare-avatar-b"></div>
           <div class="compare-traits" id="compare-traits-b"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-pfp">
+      <div class="pfp-view">
+        <div class="pfp-left">
+          <div class="pfp-avatar-wrap" id="pfp-avatar-wrap"></div>
+          <p class="pfp-info" id="pfp-info"></p>
+        </div>
+        <div class="pfp-right">
+          <div class="pfp-preview-label">400×400 Preview</div>
+          <div class="pfp-preview-box" id="pfp-preview-svg"></div>
+          <div class="pfp-github-hint">
+            Upload directly to GitHub → Settings → Profile picture
+          </div>
+          <div class="pfp-actions">
+            <button class="btn-primary" id="pfp-download-btn">↓ Download PNG</button>
+            <button class="btn-secondary" id="pfp-copy-btn">⧉ Copy SVG</button>
+          </div>
         </div>
       </div>
     </div>
